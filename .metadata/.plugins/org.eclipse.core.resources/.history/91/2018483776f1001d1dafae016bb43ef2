@@ -1,0 +1,44 @@
+package com.example.robotbackend.service;
+
+public class RobotSevice {
+
+    public void walk(int distance) {
+        if (batteryLevel <= 0) {
+            System.out.println("Robot is out of battery.");
+            return;
+        }
+
+        int extraBatteryConsumption = (int) (carryingWeight * 0.03);
+        int totalBatteryConsumption = distance + extraBatteryConsumption;
+
+        if (batteryLevel - ((double) totalBatteryConsumption / BATTERY_CAPACITY) < 0) {
+            System.out.println("Robot does not have enough battery to walk that far with the current weight.");
+            return;
+        }
+
+        walkedDistance += distance;
+        batteryLevel -= (double) totalBatteryConsumption / BATTERY_CAPACITY;
+
+        if (batteryLevel <= BATTERY_THRESHOLD) {
+            System.out.println("LOW BATTERY");
+        }
+    }
+
+    public void carry(int weight) {
+        if (weight > MAX_WEIGHT) {
+            System.out.println("OVER WEIGHT");
+            return;
+        }
+
+        carryingWeight = weight;
+        int extraBatteryConsumption = (int) (carryingWeight * 0.03);
+
+        if (batteryLevel - ((double) extraBatteryConsumption / BATTERY_CAPACITY) <= 0) {
+            System.out.println("Robot does not have enough battery to carry that weight.");
+            carryingWeight = 0;
+            return;
+        }
+
+        batteryLevel -= (double) extraBatteryConsumption / BATTERY_CAPACITY;
+    }
+}

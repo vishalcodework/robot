@@ -1,0 +1,6 @@
+package com.example.robotbackend.util;
+
+public class RobotCustomErrorHandler {
+public int errorCode;
+public String message;
+}

@@ -1,0 +1,57 @@
+package com.example.robotbackend.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.robotbackend.beans.Robot;
+
+@Service
+public class RobotSevice {
+
+	@Autowired
+	Robot robot;
+
+	public void walk(Robot robot) {
+		if (robot.getBatteryLevel() <= 0) {
+			System.out.println("Robot is out of battery.");
+			return;
+		}
+
+		int extraBatteryConsumption = (int) (robot.getCarryingWeight() * 0.03);
+		int totalBatteryConsumption = robot.getWalkedDistance()  + extraBatteryConsumption;
+
+		if (robot.getBatteryLevel() - ((double) totalBatteryConsumption / Robot.BATTERY_CAPACITY) < 0) {
+			System.out.println("Robot does not have enough battery to walk that far with the current weight.");
+			return;
+		}
+
+		int distance = robot.getWalkedDistance();
+		distance += distance; 
+		robot.setWalkedDistance(distance);
+		double batteryLevel = robot.getBatteryLevel();
+		batteryLevel -= (double) totalBatteryConsumption / Robot.BATTERY_CAPACITY;
+		robot.setBatteryLevel(batteryLevel);
+
+		if (batteryLevel <= Robot.BATTERY_THRESHOLD) {
+			System.out.println("LOW BATTERY");
+		}
+	}
+S
+	public void carry(int weight) {
+		if (weight > Robot.MAX_WEIGHT) {
+			System.out.println("OVER WEIGHT");
+			return;
+		}
+
+		robot.setCarryingWeight(weight);
+		int extraBatteryConsumption = (int) (robot.getCarryingWeight() * 0.03);
+
+		if (robot.getBatteryLevel() - ((double) extraBatteryConsumption /Robot.BATTERY_CAPACITY) <= 0) {
+			System.out.println("Robot does not have enough battery to carry that weight.");
+			robot.setCarryingWeight(0);
+			return;
+		}
+		double batteryLevel= robot.getBatteryLevel();
+		batteryLevel -= (double) extraBatteryConsumption /Robot.BATTERY_CAPACITY;
+	}
+}

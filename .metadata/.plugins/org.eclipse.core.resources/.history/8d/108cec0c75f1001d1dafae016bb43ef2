@@ -1,0 +1,6 @@
+package com.example.robotbackend.controller;
+
+@RestController
+public class RobotController {
+
+}

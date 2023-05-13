@@ -1,0 +1,12 @@
+package com.example.robotbackend.beans;
+
+public class Robot {
+	private static final int MAX_WEIGHT = 15;
+    private static final int BATTERY_CAPACITY = 7;
+    private static final double BATTERY_THRESHOLD = 0.2;
+
+    private int walkedDistance;
+    private int carryingWeight;
+    private double batteryLevel;
+
+}
